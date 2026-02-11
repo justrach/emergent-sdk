@@ -204,7 +204,7 @@ export class EmergentDB {
     const headers: Record<string, string> = {
       Authorization: `Bearer ${this.apiKey}`,
       "Content-Type": "application/json",
-      "User-Agent": "emergentdb-js/0.1.0",
+      "User-Agent": "emergentdb-js/0.0.1",
     };
 
     const resp = await fetch(url, {

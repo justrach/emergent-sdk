@@ -143,7 +143,7 @@ class EmergentDB:
             headers={
                 "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
-                "User-Agent": "emergentdb-python/0.1.0",
+                "User-Agent": "emergentdb-python/0.0.1",
             },
             timeout=timeout,
         )
