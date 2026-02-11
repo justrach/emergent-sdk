@@ -197,7 +197,7 @@ export class EmergentDB {
   private async request<T>(
     method: string,
     path: string,
-    schema: z.ZodType<T>,
+    schema: { parse(data: unknown): T },
     body?: any,
   ): Promise<T> {
     const url = `${this.baseUrl}${path}`;
