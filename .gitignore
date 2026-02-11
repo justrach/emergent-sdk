@@ -1,0 +1,43 @@
+# ─── Python ───────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+.eggs/
+*.so
+.venv/
+venv/
+env/
+.env
+.python-version
+
+# ─── TypeScript / Node.js ─────────────────────────────────────────
+node_modules/
+typescript/dist/
+*.tsbuildinfo
+.npm
+*.tgz
+
+# ─── IDE / Editor ─────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ─── Testing / Coverage ──────────────────────────────────────────
+.coverage
+htmlcov/
+.pytest_cache/
+coverage/
+*.lcov
+
+# ─── OS ───────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

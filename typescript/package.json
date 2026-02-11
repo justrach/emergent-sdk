@@ -1,0 +1,38 @@
+{
+  "name": "emergentdb",
+  "version": "0.1.0",
+  "description": "Official TypeScript/JavaScript SDK for EmergentDB vector database",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "vector",
+    "database",
+    "embedding",
+    "search",
+    "similarity",
+    "emergentdb"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "dhi": "^1.0.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}
