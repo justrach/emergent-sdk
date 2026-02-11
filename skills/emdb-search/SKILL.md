@@ -68,7 +68,6 @@ for r in results.results:
 - **k**: Max results, 1-100, default 10.
 - **include_metadata**: Must be `true` to get metadata back (default `false`).
 - **Namespace scoping**: Searches only return vectors from the specified namespace.
-- **Fan-out**: Search runs across all shards in parallel and merges results.
 - **Real-time**: Vectors are searchable immediately after insertion.
 
 ## Common Pattern: Semantic Search
