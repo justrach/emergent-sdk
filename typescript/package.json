@@ -1,6 +1,6 @@
 {
   "name": "emergentdb",
-  "version": "0.0.1",
+  "version": "0.0.11",
   "description": "Official TypeScript/JavaScript SDK for EmergentDB vector database",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
