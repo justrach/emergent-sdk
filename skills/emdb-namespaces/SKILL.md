@@ -58,9 +58,19 @@ db.batch_insert(vectors, namespace="staging")
 
 - **Auto-created**: Namespaces are created automatically on first insert. No setup required.
 - **Isolation**: Vectors in one namespace are completely invisible to searches in another.
-- **Default namespace**: If no namespace is specified, operations use the `"default"` namespace.
+- **Default namespace**: If no namespace is specified, operations use `"default"`.
 - **Naming**: Namespace names are strings up to 64 characters.
 - **Listing**: `listNamespaces()` / `list_namespaces()` returns all namespaces for your account.
+
+## Plans & Limits
+
+| Plan | Vectors | Price |
+|------|---------|-------|
+| Free | 10,000 | $0/mo |
+| Launch | 500,000 | $29/mo |
+| Scale | 2,500,000 | $99/mo |
+
+Namespaces share your account's total vector quota. Upgrade from the billing page.
 
 ## Common Pattern: Multi-Environment Setup
 
@@ -69,7 +79,7 @@ from emergentdb import EmergentDB
 
 db = EmergentDB("emdb_your_api_key")
 
-# Use namespaces to separate environments
+# Separate environments by namespace
 for doc in documents:
     db.insert(doc["id"], doc["embedding"], metadata=doc["meta"], namespace="staging")
 

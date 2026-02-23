@@ -202,6 +202,85 @@ print(result.model_dump_json())
 - `httpx >= 0.24.0`
 - `dhi >= 1.1.3`
 
+## QDKV — Metadata Cache
+
+Every EmergentDB account includes **10K QDKV keys free** — same `emdb_` API key, no new signup.
+
+QDKV is a SIMD-accelerated key-value cache (Redis alternative) for session state, feature flags, rate counters, and anything that needs sub-millisecond reads at the edge.
+
+### HTTP API
+
+```bash
+# SET
+curl -X POST https://api.emergentdb.com/qdkv/set \
+  -H "Authorization: Bearer emdb_YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "key": "session:abc", "value": "{\"userId\":42}", "ttlMs": 3600000 }'
+
+# GET
+curl https://api.emergentdb.com/qdkv/get/session:abc \
+  -H "Authorization: Bearer emdb_YOUR_API_KEY"
+# → { "value": "{\"userId\":42}", "found": true }
+
+# DEL
+curl -X DELETE https://api.emergentdb.com/qdkv/del/session:abc \
+  -H "Authorization: Bearer emdb_YOUR_API_KEY"
+
+# MGET (batch)
+curl -X POST https://api.emergentdb.com/qdkv/mget \
+  -H "Authorization: Bearer emdb_YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "keys": ["session:abc", "session:xyz"] }'
+# → { "values": { "session:abc": "{...}", "session:xyz": null } }
+
+# Stats
+curl https://api.emergentdb.com/qdkv/stats \
+  -H "Authorization: Bearer emdb_YOUR_API_KEY"
+# → { "keyCount": 42, "maxKeys": 10000, "plan": "free", "percentUsed": 0 }
+```
+
+### In Python (httpx)
+
+```python
+import httpx
+import json
+
+KEY = "emdb_YOUR_API_KEY"
+BASE = "https://api.emergentdb.com"
+headers = {"Authorization": f"Bearer {KEY}", "Content-Type": "application/json"}
+
+with httpx.Client() as client:
+    # SET
+    client.post(f"{BASE}/qdkv/set", headers=headers, json={
+        "key": "user:42:prefs",
+        "value": json.dumps({"theme": "dark"}),
+        "ttlMs": 86400_000,
+    })
+
+    # GET
+    r = client.get(f"{BASE}/qdkv/get/user:42:prefs", headers=headers).json()
+    if r["found"]:
+        prefs = json.loads(r["value"])
+
+    # MGET
+    r = client.post(f"{BASE}/qdkv/mget", headers=headers,
+                    json={"keys": ["user:42:prefs", "user:99:prefs"]}).json()
+    # r["values"] → { "user:42:prefs": "{...}", "user:99:prefs": None }
+
+    # DEL
+    client.delete(f"{BASE}/qdkv/del/user:42:prefs", headers=headers)
+```
+
+### Pricing
+
+| Plan | Max Keys | Price |
+|------|----------|-------|
+| Free (all accounts) | 10,000 | $0/mo |
+| Launch | 1,000,000 | $29/mo |
+| Scale | 10,000,000 | $99/mo |
+
+---
+
 ## License
 
 MIT

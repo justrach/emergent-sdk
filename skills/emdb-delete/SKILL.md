@@ -21,7 +21,6 @@ const result = await db.delete(42);
 
 // Delete from a specific namespace
 const result2 = await db.delete(7, "production");
-// result2: { deleted: true, id: 7, namespace: "production" }
 
 // Delete multiple vectors
 for (const id of [1, 2, 3, 4, 5]) {
@@ -51,17 +50,30 @@ for id in range(1, 6):
 ## Response Structure
 
 ```json
-{
-  "deleted": true,
-  "id": 42,
-  "namespace": "default"
-}
+{ "deleted": true, "id": 42, "namespace": "default" }
 ```
 
 ## Key Details
 
-- **Namespace scoping**: Deletes only affect the specified namespace. Deleting ID 1 from "production" does not affect ID 1 in "default".
+- **Namespace scoping**: Deletes only affect the specified namespace. Deleting ID 1 from `"production"` does not affect ID 1 in `"default"`.
 - **Idempotent**: Deleting a non-existent ID does not raise an error.
 - **Immediate**: Vectors are removed instantly and will no longer appear in search results.
+
+## Error Codes
+
+| Code | Meaning |
+|------|---------|
+| 400 | Invalid request — missing or malformed ID |
+| 401 | Missing or invalid API key |
+| 429 | Rate limit exceeded |
+| 500 | Server error — retry with backoff |
+
+## Rate Limits
+
+| Plan | Limit |
+|------|-------|
+| Free | 60 req/min |
+| Launch | 300 req/min |
+| Scale | 600 req/min |
 
 When helping the user, confirm which namespace they want to delete from to avoid accidental data loss.

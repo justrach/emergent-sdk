@@ -64,11 +64,28 @@ for r in results.results:
 
 ## Key Details
 
-- **Score**: Distance (lower = more similar). NOT a similarity percentage.
-- **k**: Max results, 1-100, default 10.
-- **include_metadata**: Must be `true` to get metadata back (default `false`).
+- **Score**: Distance — **lower = more similar**. Not a similarity percentage.
+- **k**: Max results, 1–100, default 10.
+- **include_metadata** / **includeMetadata**: Must be `true` to get metadata back (default `false`).
 - **Namespace scoping**: Searches only return vectors from the specified namespace.
 - **Real-time**: Vectors are searchable immediately after insertion.
+
+## Error Codes
+
+| Code | Meaning |
+|------|---------|
+| 400 | Invalid request — bad vector, wrong dimension |
+| 401 | Missing or invalid API key |
+| 429 | Rate limit exceeded |
+| 500 | Server error — retry with backoff |
+
+## Rate Limits
+
+| Plan | Limit |
+|------|-------|
+| Free | 60 req/min |
+| Launch | 300 req/min |
+| Scale | 600 req/min |
 
 ## Common Pattern: Semantic Search
 

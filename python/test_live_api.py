@@ -3,16 +3,12 @@ Live API test using the EmergentDB Python SDK.
 Tests insert, search, namespaces, delete against the production API.
 Bolt is configured for 1536-dim vectors.
 """
-import os
 import random
 import sys
 sys.path.insert(0, ".")
 from emergentdb import EmergentDB
 
-API_KEY = os.environ.get("EMERGENTDB_API_KEY")
-if not API_KEY:
-    print("ERROR: EMERGENTDB_API_KEY environment variable is required")
-    sys.exit(1)
+API_KEY = "emdb_Xoq1ezhcKYvlzO3ByMHdBU7LnOUEUqJF"
 DIM = 1536  # Bolt is configured for 1536-dim (OpenAI ada-002)
 
 def rand_vec(seed=None):

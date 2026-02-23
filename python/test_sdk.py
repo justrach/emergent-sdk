@@ -6,16 +6,12 @@ Bolt is configured for 1536-dim vectors.
 
 Run: python test_sdk.py
 """
-import os
 import random
 import sys
 sys.path.insert(0, ".")
 from emergentdb import EmergentDB
 
-API_KEY = os.environ.get("EMERGENTDB_API_KEY")
-if not API_KEY:
-    print("ERROR: EMERGENTDB_API_KEY environment variable is required")
-    sys.exit(1)
+API_KEY = "emdb_0wAmgHQN6u-AnybHV7N0VioMMFlWFZir"
 DIM = 1536
 
 

@@ -59,8 +59,26 @@ result = db.batch_insert_all(vectors, namespace="production")
 - **Upsert**: Re-inserting an existing ID in the same namespace replaces it. Response shows `upserted: true`.
 - **Namespaces**: Optional, defaults to `"default"`. Created automatically on first use.
 - **Metadata fields**: `title` (str), `content` (str), `source_url` (str), `tags` (str[])
-- **Capacity**: Returns HTTP 402 if the tenant's vector quota is exceeded.
-- **Dimensions**: Must match the index dimension (1536 by default). Mismatched dimensions cause errors.
+- **Batch limit**: Max 1,000 vectors per `batchInsert` / `batch_insert` call. Use `batchInsertAll` / `batch_insert_all` for larger sets.
+- **Dimensions**: Must match the index dimension (1536 by default). Mismatched dimensions return HTTP 400.
+
+## Error Codes
+
+| Code | Meaning |
+|------|---------|
+| 400 | Invalid request — bad JSON, wrong vector dimension, missing field |
+| 401 | Missing or invalid API key |
+| 402 | Vector capacity exceeded — upgrade plan |
+| 429 | Rate limit exceeded — back off and retry |
+| 500 | Server error — retry with backoff |
+
+## Rate Limits
+
+| Plan | Limit |
+|------|-------|
+| Free | 60 req/min |
+| Launch | 300 req/min |
+| Scale | 600 req/min |
 
 ## Common Pattern: OpenAI Embeddings
 

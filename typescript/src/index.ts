@@ -197,14 +197,14 @@ export class EmergentDB {
   private async request<T>(
     method: string,
     path: string,
-    schema: { parse(data: unknown): T },
+    schema: z.ZodType<T>,
     body?: any,
   ): Promise<T> {
     const url = `${this.baseUrl}${path}`;
     const headers: Record<string, string> = {
       Authorization: `Bearer ${this.apiKey}`,
       "Content-Type": "application/json",
-      "User-Agent": "emergentdb-js/0.0.11",
+      "User-Agent": "emergentdb-js/0.0.12",
     };
 
     const resp = await fetch(url, {

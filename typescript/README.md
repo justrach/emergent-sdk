@@ -198,6 +198,76 @@ import {
 
 Schemas use [dhi](https://github.com/nicholasgasior/dhi) (Zod-compatible), so you can compose them into your own validation pipelines.
 
+## QDKV — Metadata Cache
+
+Every EmergentDB account includes **10K QDKV keys free** — same `emdb_` API key, no new signup.
+
+QDKV is a SIMD-accelerated key-value cache (Redis alternative) for session state, feature flags, rate counters, and anything that needs sub-millisecond reads at the edge.
+
+### HTTP API
+
+```bash
+# SET
+curl -X POST https://api.emergentdb.com/qdkv/set \
+  -H "Authorization: Bearer emdb_YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "key": "session:abc", "value": "{\"userId\":42}", "ttlMs": 3600000 }'
+
+# GET
+curl https://api.emergentdb.com/qdkv/get/session:abc \
+  -H "Authorization: Bearer emdb_YOUR_API_KEY"
+# → { "value": "{\"userId\":42}", "found": true }
+
+# DEL
+curl -X DELETE https://api.emergentdb.com/qdkv/del/session:abc \
+  -H "Authorization: Bearer emdb_YOUR_API_KEY"
+
+# MGET (batch)
+curl -X POST https://api.emergentdb.com/qdkv/mget \
+  -H "Authorization: Bearer emdb_YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "keys": ["session:abc", "session:xyz"] }'
+# → { "values": { "session:abc": "{...}", "session:xyz": null } }
+
+# Stats
+curl https://api.emergentdb.com/qdkv/stats \
+  -H "Authorization: Bearer emdb_YOUR_API_KEY"
+# → { "keyCount": 42, "maxKeys": 10000, "plan": "free", "percentUsed": 0 }
+```
+
+### In Workers (TypeScript)
+
+```typescript
+const KEY = "emdb_YOUR_API_KEY";
+const BASE = "https://api.emergentdb.com";
+
+// set
+await fetch(`${BASE}/qdkv/set`, {
+  method: "POST",
+  headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
+  body: JSON.stringify({ key: "user:42:prefs", value: JSON.stringify(prefs), ttlMs: 86400_000 }),
+});
+
+// get
+const r = await fetch(`${BASE}/qdkv/get/user:42:prefs`, {
+  headers: { Authorization: `Bearer ${KEY}` },
+}).then(r => r.json()) as { value: string | null; found: boolean };
+
+if (r.found) {
+  const prefs = JSON.parse(r.value!);
+}
+```
+
+### Pricing
+
+| Plan | Max Keys | Price |
+|------|----------|-------|
+| Free (all accounts) | 10,000 | $0/mo |
+| Launch | 1,000,000 | $29/mo |
+| Scale | 10,000,000 | $99/mo |
+
+---
+
 ## License
 
 MIT
